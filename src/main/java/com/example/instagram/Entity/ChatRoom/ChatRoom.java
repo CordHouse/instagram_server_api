@@ -8,7 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,7 +23,7 @@ public class ChatRoom {
     private String last_message;
 
     @Column(nullable = false)
-    private LocalDate last_sent_at;
+    private LocalDateTime last_sent_at;
 
     @Column(nullable = false)
     private long host;
@@ -33,7 +33,7 @@ public class ChatRoom {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public ChatRoom(User user, long host, String last_message, LocalDate last_sent_at) {
+    public ChatRoom(User user, long host, String last_message, LocalDateTime last_sent_at) {
         this.user = user;
         this.host = host;
         this.last_message = last_message;
