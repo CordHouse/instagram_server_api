@@ -18,21 +18,21 @@ public class BoardController {
     private final BoardService boardService;
 
     // 글 생성
-    @RequestMapping("/create/board")
+    @PostMapping("/create/board")
     @ResponseStatus(HttpStatus.OK)
     public BoardCreateResponseDto createBoard(@RequestBody @Valid BoardCreateRequestDto boardCreateRequestDto) {
         return boardService.createBoard(boardCreateRequestDto);
     }
 
     // 글 수정
-    @RequestMapping("/edit/board/{id}")
+    @PutMapping("/edit/board/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BoardEditResponseDto editBoard(@PathVariable long id, @RequestBody @Valid BoardEditRequestDto boardEditRequestDto) {
         return boardService.editBoard(id, boardEditRequestDto);
     }
 
     // 글 삭제
-    @RequestMapping("/delete/board/{id}")
+    @DeleteMapping("/delete/board/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBoard(@PathVariable long id) {
         boardService.deleteBoard(id);
