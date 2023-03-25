@@ -1,6 +1,6 @@
 package com.example.instagram.Entity.Comment;
 
-import com.example.instagram.Entity.Board.Board;
+import com.example.instagram.Entity.Posts.Posts;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,12 +22,12 @@ public class Comment {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Board board_id;
+    private Posts posts;
 
-    public Comment(Board board_id, String content) {
-        this.board_id = board_id;
+    public Comment(Posts posts, String content) {
+        this.posts = posts;
         this.content = content;
     }
 }

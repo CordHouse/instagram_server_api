@@ -4,11 +4,11 @@ import com.example.instagram.Dto.Comment.CommentCreateRequestDto;
 import com.example.instagram.Dto.Comment.CommentCreateResponseDto;
 import com.example.instagram.Dto.Comment.CommentEditRequestDto;
 import com.example.instagram.Dto.Comment.CommentEditResponseDto;
-import com.example.instagram.Entity.Board.Board;
+import com.example.instagram.Entity.Posts.Posts;
 import com.example.instagram.Entity.Comment.Comment;
-import com.example.instagram.Exception.NotFoundBoardException;
-import com.example.instagram.Exception.NotFoundCommentException;
-import com.example.instagram.Repository.Board.BoardRepository;
+import com.example.instagram.Exception.Posts.NotFoundPostsException;
+import com.example.instagram.Exception.Comment.NotFoundCommentException;
+import com.example.instagram.Repository.Posts.PostsRepository;
 import com.example.instagram.Repository.Comment.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final BoardRepository boardRepository;
+    private final PostsRepository postsRepository;
 
     // 댓글 생성
     @Transactional
     public CommentCreateResponseDto createComment(CommentCreateRequestDto commentCreateRequestDto) {
-        Board board_id = getPost_id(commentCreateRequestDto.getPost_id());
-        Comment newComment = new Comment(board_id, commentCreateRequestDto.getContent());
+        Posts posts_id = getPost_id(commentCreateRequestDto.getPost_id());
+        Comment newComment = new Comment(posts_id, commentCreateRequestDto.getContent());
         commentRepository.save(newComment);
         return new CommentCreateResponseDto().toDo(newComment);
     }
@@ -44,7 +44,7 @@ public class CommentService {
     }
 
     // 게시글 작성자 id(pk)로 검색
-    public Board getPost_id(long id) {
-        return boardRepository.findById(id).orElseThrow(NotFoundBoardException::new);
+    public Posts getPost_id(long id) {
+        return postsRepository.findById(id).orElseThrow(NotFoundPostsException::new);
     }
 }
