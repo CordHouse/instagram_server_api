@@ -1,22 +1,22 @@
 package com.example.instagram.Dto.Feed;
 
-import com.example.instagram.Entity.Comment.Comment;
-import com.example.instagram.Entity.Feed.Feed;
 import com.example.instagram.Entity.Posts.Posts;
-import com.example.instagram.Entity.Replies.Replies;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedResponseDto {
-    private Posts posts;
-    private Comment comments;
-    private Replies replies;
+    private List<FeedPostsResponseDto> posts;
 
-    public FeedResponseDto toDo(Feed feed) {
-        return new FeedResponseDto(feed.getPosts(), feed.getComment(), feed.getReplies());
+    public FeedResponseDto toDo(List<Posts> posts) {
+        return new FeedResponseDto(
+                posts.stream().map(post -> new FeedPostsResponseDto().toDo(post)).collect(Collectors.toList())
+        );
     }
 }
