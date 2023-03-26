@@ -6,10 +6,13 @@ import com.example.instagram.Dto.Replies.RepliesEditRequestDto;
 import com.example.instagram.Dto.Replies.RepliesEditResponseDto;
 import com.example.instagram.Entity.Comment.Comment;
 import com.example.instagram.Entity.Replies.Replies;
+import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.Comment.NotFoundCommentException;
 import com.example.instagram.Exception.Replies.NotFoundRepliesException;
+import com.example.instagram.Exception.User.NotFoundUserException;
 import com.example.instagram.Repository.Comment.CommentRepository;
 import com.example.instagram.Repository.Replies.RepliesRepository;
+import com.example.instagram.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +22,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class RepliesService {
     private final RepliesRepository repliesRepository;
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     // 답글 생성
     @Transactional
     public RepliesCreateResponseDto createReplies(RepliesCreateRequestDto repliesCreateRequestDto) {
+        User user = userRepository.findById(1L).orElseThrow(NotFoundUserException::new);
         Comment choiceComment = commentRepository.findById(repliesCreateRequestDto.getComment_id())
                 .orElseThrow(NotFoundCommentException::new);
-        Replies newReplies = new Replies(repliesCreateRequestDto.getContent(), choiceComment);
+        Replies newReplies = new Replies(repliesCreateRequestDto.getContent(), choiceComment, user);
         repliesRepository.save(newReplies);
         return new RepliesCreateResponseDto().toDo(newReplies);
     }
