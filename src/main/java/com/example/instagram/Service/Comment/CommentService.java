@@ -4,12 +4,15 @@ import com.example.instagram.Dto.Comment.CommentCreateRequestDto;
 import com.example.instagram.Dto.Comment.CommentCreateResponseDto;
 import com.example.instagram.Dto.Comment.CommentEditRequestDto;
 import com.example.instagram.Dto.Comment.CommentEditResponseDto;
-import com.example.instagram.Entity.Posts.Posts;
 import com.example.instagram.Entity.Comment.Comment;
-import com.example.instagram.Exception.Posts.NotFoundPostsException;
+import com.example.instagram.Entity.Posts.Posts;
+import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.Comment.NotFoundCommentException;
-import com.example.instagram.Repository.Posts.PostsRepository;
+import com.example.instagram.Exception.Posts.NotFoundPostsException;
+import com.example.instagram.Exception.User.NotFoundUserException;
 import com.example.instagram.Repository.Comment.CommentRepository;
+import com.example.instagram.Repository.Posts.PostsRepository;
+import com.example.instagram.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostsRepository postsRepository;
+    private final UserRepository userRepository;
 
     // 댓글 생성
     @Transactional
     public CommentCreateResponseDto createComment(CommentCreateRequestDto commentCreateRequestDto) {
+        User user = userRepository.findById(1L).orElseThrow(NotFoundUserException::new);
         Posts posts_id = getPost_id(commentCreateRequestDto.getPost_id());
-        Comment newComment = new Comment(posts_id, commentCreateRequestDto.getContent());
+        Comment newComment = new Comment(posts_id, commentCreateRequestDto.getContent(), user);
         commentRepository.save(newComment);
         return new CommentCreateResponseDto().toDo(newComment);
     }
