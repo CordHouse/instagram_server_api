@@ -1,5 +1,6 @@
 package com.example.instagram.Entity.Posts;
 
+import com.example.instagram.Entity.Comment.Comment;
 import com.example.instagram.Entity.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -28,6 +30,9 @@ public class Posts {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+    @OneToMany(mappedBy = "posts", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
     public Posts(User user, String image, String content) {
         this.user = user;
