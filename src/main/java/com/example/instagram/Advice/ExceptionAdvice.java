@@ -1,5 +1,6 @@
 package com.example.instagram.Advice;
 
+import com.example.instagram.Exception.Posts.NotFoundFeedException;
 import com.example.instagram.Exception.Posts.NotFoundPostsException;
 import com.example.instagram.Exception.ChatRoom.NotFoundChatRoomException;
 import com.example.instagram.Exception.Comment.NotFoundCommentException;
@@ -54,5 +55,11 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String alreadyFollowException() {
         return "이미 팔로우 한 유저입니다.";
+    }
+
+    @ExceptionHandler(NotFoundFeedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String notFoundFeedException() {
+        return "피드가 존재하지 않습니다.";
     }
 }
