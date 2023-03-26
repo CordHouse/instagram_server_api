@@ -1,6 +1,8 @@
 package com.example.instagram.Entity.Comment;
 
 import com.example.instagram.Entity.Posts.Posts;
+import com.example.instagram.Entity.Replies.Replies;
+import com.example.instagram.Entity.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,12 +25,21 @@ public class Comment {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "posts_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Posts posts;
 
-    public Comment(Posts posts, String content) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<Replies> replies;
+
+    public Comment(Posts posts, String content, User user) {
         this.posts = posts;
         this.content = content;
+        this.user = user;
     }
 }
