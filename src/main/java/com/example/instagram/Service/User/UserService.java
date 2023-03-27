@@ -27,7 +27,7 @@ public class UserService {
 
     // 회원가입
     @Transactional
-    public UserRegisterResponseDto register(UserRegisterRequestDto userRegisterRequestDto) {
+    public UserRegisterResponseDto signUp(UserRegisterRequestDto userRegisterRequestDto) {
         User newUser = new User(userRegisterRequestDto.getNickname(), userRegisterRequestDto.getProfile_image());
         userRepository.save(newUser);
         return new UserRegisterResponseDto().toDo(newUser);
