@@ -7,6 +7,7 @@ import com.example.instagram.Exception.Comment.NotFoundCommentException;
 import com.example.instagram.Exception.DirectMessage.NotFoundDirectMessageException;
 import com.example.instagram.Exception.Follow.AlreadyFollowException;
 import com.example.instagram.Exception.Replies.NotFoundRepliesException;
+import com.example.instagram.Exception.Token.NotMatchRefreshTokenException;
 import com.example.instagram.Exception.User.NotFoundUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -61,5 +62,11 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String notFoundFeedException() {
         return "피드가 존재하지 않습니다.";
+    }
+
+    @ExceptionHandler(NotMatchRefreshTokenException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String notMatchRefreshTokenException() {
+        return "토큰정보가 일치하지 않습니다.";
     }
 }
