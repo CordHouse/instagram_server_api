@@ -35,8 +35,8 @@ public class UserService {
 
     // 회원탈퇴
     @Transactional
-    public void deleteUser(long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(User user) {
+        userRepository.deleteById(user.getId());
     }
 
     // 로그인
@@ -64,23 +64,22 @@ public class UserService {
         return tokenResponseDto;
     }
 
+    // Authentication 생성
     public UsernamePasswordAuthenticationToken getAuthentication(User user) {
         return new UsernamePasswordAuthenticationToken(user.getNickname(), "");
     }
 
     // 프로필 조회
     @Transactional
-    public UserResponseDto getProfile(long id) {
-        User userProfile = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
-        return new UserResponseDto().toDo(userProfile);
+    public UserResponseDto getProfile(User user) {
+        return new UserResponseDto().toDo(user);
     }
 
     // 프로필 수정
     @Transactional
-    public UserEditResponseDto editProfile(UserEditRequestDto userEditRequestDto) {
-        User userProfile = userRepository.findById(1L).orElseThrow(NotFoundUserException::new);
-        userProfile.setNickname(userEditRequestDto.getNickname());
-        userProfile.setProfile_image_url(userEditRequestDto.getProfile_image_url());
-        return new UserEditResponseDto().toDo(userProfile);
+    public UserEditResponseDto editProfile(UserEditRequestDto userEditRequestDto, User user) {
+        user.setNickname(userEditRequestDto.getNickname());
+        user.setProfile_image_url(userEditRequestDto.getProfile_image_url());
+        return new UserEditResponseDto().toDo(user);
     }
 }
