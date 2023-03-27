@@ -10,7 +10,6 @@ import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.Posts.NotFoundFeedException;
 import com.example.instagram.Exception.Posts.NotFoundPostsException;
 import com.example.instagram.Repository.Posts.PostsRepository;
-import com.example.instagram.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostsService {
     private final PostsRepository postsRepository;
-    private final UserRepository userRepository;
 
     // 글 생성
     @Transactional
-    public PostsCreateResponseDto createBoard(PostsCreateRequestDto postsCreateRequestDto) {
-        User user = userRepository.findById(1L).orElseThrow();
+    public PostsCreateResponseDto createBoard(PostsCreateRequestDto postsCreateRequestDto, User user) {
         Posts newPosts = new Posts(user, postsCreateRequestDto.getImage(), postsCreateRequestDto.getContent());
         postsRepository.save(newPosts);
 
@@ -35,8 +32,8 @@ public class PostsService {
 
     // 글 수정
     @Transactional
-    public PostsEditResponseDto editBoard(long id, PostsEditRequestDto postsEditRequestDto) {
-        Posts editPosts = postsRepository.findById(id).orElseThrow(NotFoundPostsException::new);
+    public PostsEditResponseDto editBoard(long id, PostsEditRequestDto postsEditRequestDto, User user) {
+        Posts editPosts = postsRepository.findByIdAndUser(id, user).orElseThrow(NotFoundPostsException::new);
         editPosts.setImage(postsEditRequestDto.getImage());
         editPosts.setContent(postsEditRequestDto.getContent());
         return new PostsEditResponseDto().toDo(editPosts);
@@ -44,14 +41,14 @@ public class PostsService {
 
     // 글 삭제
     @Transactional
-    public void deleteBoard(long id) {
-        postsRepository.deleteById(id);
+    public void deleteBoard(long id, User user) {
+        postsRepository.deleteByIdAndUser(id, user);
     }
 
     // 피드 조회
     @Transactional
-    public FeedResponseDto getFeed(long id) {
-        List<Posts> feedList = postsRepository.findAllByUser_Id(id);
+    public FeedResponseDto getFeed(User user) {
+        List<Posts> feedList = postsRepository.findAllByUser_Id(user.getId());
         if(feedList.isEmpty()) {
             throw new NotFoundFeedException();
         }
