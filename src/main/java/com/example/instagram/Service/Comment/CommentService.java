@@ -9,10 +9,8 @@ import com.example.instagram.Entity.Posts.Posts;
 import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.Comment.NotFoundCommentException;
 import com.example.instagram.Exception.Posts.NotFoundPostsException;
-import com.example.instagram.Exception.User.NotFoundUserException;
 import com.example.instagram.Repository.Comment.CommentRepository;
 import com.example.instagram.Repository.Posts.PostsRepository;
-import com.example.instagram.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostsRepository postsRepository;
-    private final UserRepository userRepository;
 
     // 댓글 생성
     @Transactional
-    public CommentCreateResponseDto createComment(CommentCreateRequestDto commentCreateRequestDto) {
-        User user = userRepository.findById(1L).orElseThrow(NotFoundUserException::new);
+    public CommentCreateResponseDto createComment(CommentCreateRequestDto commentCreateRequestDto, User user) {
         Posts posts_id = getPost_id(commentCreateRequestDto.getPost_id());
         Comment newComment = new Comment(posts_id, commentCreateRequestDto.getContent(), user);
         commentRepository.save(newComment);
@@ -36,8 +32,8 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public CommentEditResponseDto editComment(CommentEditRequestDto commentEditRequestDto) {
-        Comment editComment = commentRepository.findById(commentEditRequestDto.getId()).orElseThrow(NotFoundCommentException::new);
+    public CommentEditResponseDto editComment(CommentEditRequestDto commentEditRequestDto, User user) {
+        Comment editComment = commentRepository.findByIdAndUser(commentEditRequestDto.getId(), user).orElseThrow(NotFoundCommentException::new);
         editComment.setContent(commentEditRequestDto.getContent());
         return new CommentEditResponseDto().toDo(editComment);
     }
