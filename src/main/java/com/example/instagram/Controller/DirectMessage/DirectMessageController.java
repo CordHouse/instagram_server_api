@@ -3,9 +3,14 @@ package com.example.instagram.Controller.DirectMessage;
 import com.example.instagram.Dto.ChatRoom.ChatRoomResponseDto;
 import com.example.instagram.Dto.DirectMessage.DirectMessageInfoResponseDto;
 import com.example.instagram.Dto.DirectMessage.SendMessageRequestDto;
+import com.example.instagram.Entity.User.User;
+import com.example.instagram.Exception.User.NotFoundUserException;
+import com.example.instagram.Repository.User.UserRepository;
 import com.example.instagram.Service.DirectMessage.DirectMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,12 +21,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class DirectMessageController {
     private final DirectMessageService directMessageService;
+    private final UserRepository userRepository;
 
     // DM 전송
     @PostMapping("/direct/message")
     @ResponseStatus(HttpStatus.OK)
     public void sendMessage(@RequestBody @Valid SendMessageRequestDto sendMessageRequestDto) {
-        directMessageService.sendMessage(sendMessageRequestDto);
+        directMessageService.sendMessage(sendMessageRequestDto, getUser());
     }
 
     // DM 목록 조회
@@ -36,5 +42,11 @@ public class DirectMessageController {
     @ResponseStatus(HttpStatus.OK)
     public List<DirectMessageInfoResponseDto> getDirectMessageInfo(@PathVariable long id) {
         return directMessageService.getDirectMessageInfo(id);
+    }
+
+    // 토큰 정보로 유저 객체 생성
+    public User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByNickname(authentication.getName()).orElseThrow(NotFoundUserException::new);
     }
 }
