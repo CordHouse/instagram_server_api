@@ -30,10 +30,10 @@ public class UserController {
     }
 
     // 회원탈퇴
-    @DeleteMapping("/profile/{id}")
+    @DeleteMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@PathVariable long id) {
-        userService.deleteUser(id);
+    public void deleteUser() {
+        userService.deleteUser(getUser());
     }
 
     // 로그인
@@ -51,17 +51,17 @@ public class UserController {
     }
 
     // 프로필 조회 -> Jwt + security 적용 이후 확인
-    @PostMapping("/profile/{id}")
+    @PostMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDto getProfile(@PathVariable long id) {
-        return userService.getProfile(id);
+    public UserResponseDto getProfile() {
+        return userService.getProfile(getUser());
     }
 
     // 프로필 수정 -> Jwt + security 적용 이후 확인
     @PutMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserEditResponseDto editProfile(@RequestBody @Valid UserEditRequestDto userEditRequestDto) {
-        return userService.editProfile(userEditRequestDto);
+        return userService.editProfile(userEditRequestDto, getUser());
     }
 
     // 토큰 정보로 유저 객체 생성
