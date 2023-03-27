@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DirectMessageRepository extends JpaRepository<DirectMessage, Long> {
-    List<DirectMessage> findAllBySenderOrUser(User sender, User receiver);
+    List<DirectMessage> findAllBySenderOrUser(long sender, User receiver);
 }

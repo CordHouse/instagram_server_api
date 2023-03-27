@@ -70,7 +70,7 @@ public class DirectMessageService {
     // DM 상세 내역 조회
     @Transactional
     public List<DirectMessageInfoResponseDto> getDirectMessageInfo(User user) {
-        List<DirectMessage> directMessageInfo = directMessageRepository.findAllBySenderOrUser(user, user);
+        List<DirectMessage> directMessageInfo = directMessageRepository.findAllBySenderOrUser(user.getId(), user);
 
         if(directMessageInfo.isEmpty()) {
             throw new NotFoundDirectMessageException();
