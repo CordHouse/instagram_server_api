@@ -31,17 +31,17 @@ public class DirectMessageController {
     }
 
     // DM 목록 조회
-    @GetMapping("/direct/message/{id}")
+    @GetMapping("/direct/message")
     @ResponseStatus(HttpStatus.OK)
-    public List<ChatRoomResponseDto> getDirectMessages(@PathVariable long id) {
-        return directMessageService.getDirectMessages(id);
+    public List<ChatRoomResponseDto> getDirectMessages() {
+        return directMessageService.getDirectMessages(getUser());
     }
 
     // DM 상세 내역 조회
-    @GetMapping("/direct/message/info/{id}")
+    @GetMapping("/direct/message/info")
     @ResponseStatus(HttpStatus.OK)
-    public List<DirectMessageInfoResponseDto> getDirectMessageInfo(@PathVariable long id) {
-        return directMessageService.getDirectMessageInfo(id);
+    public List<DirectMessageInfoResponseDto> getDirectMessageInfo() {
+        return directMessageService.getDirectMessageInfo(getUser());
     }
 
     // 토큰 정보로 유저 객체 생성
