@@ -46,7 +46,7 @@ public class DirectMessageService {
             return ;
         }
         // 3-1. 없다면 새로 방을 만들고 첫 DM을 보낸다.
-        ChatRoom newChatRoom = new ChatRoom(targetUser, 1L, sendMessageRequestDto.getContent(), nowDate);
+        ChatRoom newChatRoom = new ChatRoom(targetUser, user.getId(), sendMessageRequestDto.getContent(), nowDate);
         DirectMessage newDirectMessage = new DirectMessage(newChatRoom, targetUser, sendMessageRequestDto.getContent(), user.getId(), nowDate);
         chatRoomRepository.save(newChatRoom);
         directMessageRepository.save(newDirectMessage);
@@ -54,8 +54,8 @@ public class DirectMessageService {
 
     // DM 목록 조회
     @Transactional
-    public List<ChatRoomResponseDto> getDirectMessages(long id) {
-        List<ChatRoom> targetUserChatRoom = chatRoomRepository.findAllByHostOrUser_Id(id, id);
+    public List<ChatRoomResponseDto> getDirectMessages(User user) {
+        List<ChatRoom> targetUserChatRoom = chatRoomRepository.findAllByUserOrTarget(user, user.getId());
 
         if(targetUserChatRoom.isEmpty()) {
             throw new NotFoundChatRoomException();
@@ -69,8 +69,8 @@ public class DirectMessageService {
 
     // DM 상세 내역 조회
     @Transactional
-    public List<DirectMessageInfoResponseDto> getDirectMessageInfo(long id) {
-        List<DirectMessage> directMessageInfo = directMessageRepository.findAllByChatRoom_Id(id);
+    public List<DirectMessageInfoResponseDto> getDirectMessageInfo(User user) {
+        List<DirectMessage> directMessageInfo = directMessageRepository.findAllBySenderOrUser(user, user);
 
         if(directMessageInfo.isEmpty()) {
             throw new NotFoundDirectMessageException();
