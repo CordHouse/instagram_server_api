@@ -23,10 +23,10 @@ public class UserController {
     private final UserRepository userRepository;
 
     // 회원가입
-    @PostMapping("/register")
+    @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.OK)
-    public UserRegisterResponseDto register(@RequestBody @Valid UserRegisterRequestDto userRegisterRequestDto) {
-        return userService.register(userRegisterRequestDto);
+    public UserRegisterResponseDto signUp(@RequestBody @Valid UserRegisterRequestDto userRegisterRequestDto) {
+        return userService.signUp(userRegisterRequestDto);
     }
 
     // 회원탈퇴
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     // 로그인
-    @PostMapping("/signIn")
+    @PostMapping("/sign-in")
     @ResponseStatus(HttpStatus.OK)
     public TokenResponseDto signIn(@RequestBody @Valid UserSignInRequestDto userSignInRequestDto) {
         return userService.signIn(userSignInRequestDto);
