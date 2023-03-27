@@ -34,7 +34,7 @@ public class DirectMessageService {
         // 1. 대상 유저가 있는지 db에서 찾아본다.
         User targetUser = userRepository.findById(sendMessageRequestDto.getUser_id()).orElseThrow(NotFoundUserException::new);
         // 2. 있다면, DM을 전송해야 하는데 이전에 대화하던 방이 있는지 찾아본다.
-        ChatRoom searchChatRoom = chatRoomRepository.findByHostAndUserOrUserAndHost(user.getId(), targetUser, targetUser, user.getId());
+        ChatRoom searchChatRoom = chatRoomRepository.findByTargetAndUserOrUserAndTarget(user.getId(), targetUser, targetUser, user.getId());
         LocalDateTime nowDate = LocalDateTime.now();
         // 3. 방이 있다면, 대화를 이어나간다.
         if(searchChatRoom != null) {
