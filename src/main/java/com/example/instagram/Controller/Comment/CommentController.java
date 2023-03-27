@@ -41,7 +41,7 @@ public class CommentController {
     @DeleteMapping("/comment/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteComment(@PathVariable long id) {
-        commentService.deleteComment(id);
+        commentService.deleteComment(id, getUser());
     }
 
     // 토큰 정보로 유저 객체 생성
