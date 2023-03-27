@@ -40,8 +40,8 @@ public class CommentService {
 
     // 댓글 삭제
     @Transactional
-    public void deleteComment(long id) {
-        commentRepository.deleteById(id);
+    public void deleteComment(long id, User user) {
+        commentRepository.deleteByIdAndUser(id, user);
     }
 
     // 게시글 작성자 id(pk)로 검색
