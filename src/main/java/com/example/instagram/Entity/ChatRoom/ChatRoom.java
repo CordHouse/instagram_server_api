@@ -26,16 +26,16 @@ public class ChatRoom {
     private LocalDateTime last_sent_at;
 
     @Column(nullable = false)
-    private long host;
+    private long target;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public ChatRoom(User user, long host, String last_message, LocalDateTime last_sent_at) {
+    public ChatRoom(User user, long target, String last_message, LocalDateTime last_sent_at) {
         this.user = user;
-        this.host = host;
+        this.target = target;
         this.last_message = last_message;
         this.last_sent_at = last_sent_at;
     }
