@@ -9,15 +9,20 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j // log 출력시 사용하기 위한 어노테이션
 public class TokenProvider implements InitializingBean {
+    private static final String AUTHENTICATION_KEY = "auth";
     private static final String USER_ID = "user_id";
     private static final String TOKEN_VALID_TIME = "token_valid";
     private static final String REFRESH_TOKEN_VALID_TIME = "refresh_token_valid";
@@ -49,6 +54,9 @@ public class TokenProvider implements InitializingBean {
 
     // 토큰 생성
     public TokenResponseDto createToken(Authentication authentication, long user_id) {
+        String authorities = authentication.getAuthorities()
+                .stream().map(s -> s.getAuthority()).collect(Collectors.joining(","));
+
         long now = (new Date()).getTime();
 
         Date expirationTime = new Date(now + tokenValidationTime);
@@ -57,6 +65,7 @@ public class TokenProvider implements InitializingBean {
         String access_token = Jwts.builder()
                 .setSubject(authentication.getName())
                 .setExpiration(expirationTime)
+                .claim(AUTHENTICATION_KEY, authorities)
                 .claim(USER_ID, user_id)
                 .claim(TOKEN_VALID_TIME, expirationTime)
                 .claim(REFRESH_TOKEN_VALID_TIME, refreshTokenExpirationTime)
@@ -80,13 +89,18 @@ public class TokenProvider implements InitializingBean {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(this.key)
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token) // jwt <-> jws 주의
                 .getBody();
 
-        // 여기서 User 클래스는 UserDetail path를 선택
-        User principal = new User(claims.getSubject(), null, null);
+        List<SimpleGrantedAuthority> authorities = Arrays
+                .stream(claims.get(AUTHENTICATION_KEY).toString().split(","))
+                .map(s -> new SimpleGrantedAuthority(s))
+                .collect(Collectors.toList());
 
-        return new UsernamePasswordAuthenticationToken(principal, "");
+        User principal = new User(claims.getSubject(), "", authorities);
+
+        // UsernamePasswordAuthenticationToken 사용시 맨 마지막은 권한부여가 있어야 하기 때문에 빈 리스트라도 필수로 넣어줘야한다. 안그러면 401떠요..
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
     // 토큰 검증
