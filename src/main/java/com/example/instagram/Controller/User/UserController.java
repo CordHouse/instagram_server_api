@@ -32,8 +32,8 @@ public class UserController {
     // 회원탈퇴
     @DeleteMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser() {
-        userService.deleteUser(getUser());
+    public void deleteUser(@RequestBody @Valid UserDeleteRequestDto userDeleteRequestDto) {
+        userService.deleteUser(userDeleteRequestDto, getUser());
     }
 
     // 로그인
