@@ -36,5 +36,6 @@ public class User {
         this.profile_image_url = profile_image_url;
         this.follow = 0;
         this.following = 0;
+        this.role = UserRoleType.ROLE_MEMBER;
     }
 }
