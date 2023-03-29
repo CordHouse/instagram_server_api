@@ -8,6 +8,7 @@ import com.example.instagram.Exception.DirectMessage.NotFoundDirectMessageExcept
 import com.example.instagram.Exception.Follow.AlreadyFollowException;
 import com.example.instagram.Exception.Replies.NotFoundRepliesException;
 import com.example.instagram.Exception.Token.NotMatchRefreshTokenException;
+import com.example.instagram.Exception.User.FailureUserDeleteException;
 import com.example.instagram.Exception.User.NotFoundUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -68,5 +69,11 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String notMatchRefreshTokenException() {
         return "토큰정보가 일치하지 않습니다.";
+    }
+
+    @ExceptionHandler(FailureUserDeleteException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String failureUserDeleteException() {
+        return "유저 정보가 일치하지 않아 탈퇴가 불가능합니다.";
     }
 }
