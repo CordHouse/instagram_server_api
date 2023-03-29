@@ -27,6 +27,10 @@ public class User {
     @Column(nullable = false)
     private long following;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private UserRoleType role;
+
     public User(String nickname, String profile_image_url) {
         this.nickname = nickname;
         this.profile_image_url = profile_image_url;
