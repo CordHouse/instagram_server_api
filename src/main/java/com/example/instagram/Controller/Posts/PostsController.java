@@ -32,10 +32,10 @@ public class PostsController {
     }
 
     // 글 수정
-    @PutMapping("/posts/{id}")
+    @PutMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
-    public PostsEditResponseDto editBoard(@PathVariable long id, @RequestBody @Valid PostsEditRequestDto postsEditRequestDto) {
-        return postsService.editBoard(id, postsEditRequestDto, getUser());
+    public PostsEditResponseDto editBoard(@RequestBody @Valid PostsEditRequestDto postsEditRequestDto) {
+        return postsService.editBoard(postsEditRequestDto, getUser());
     }
 
     // 글 삭제

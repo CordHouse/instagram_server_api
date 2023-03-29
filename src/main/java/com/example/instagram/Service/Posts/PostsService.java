@@ -32,8 +32,8 @@ public class PostsService {
 
     // 글 수정
     @Transactional
-    public PostsEditResponseDto editBoard(long id, PostsEditRequestDto postsEditRequestDto, User user) {
-        Posts editPosts = postsRepository.findByIdAndUser(id, user).orElseThrow(NotFoundPostsException::new);
+    public PostsEditResponseDto editBoard(PostsEditRequestDto postsEditRequestDto, User user) {
+        Posts editPosts = postsRepository.findByIdAndUser(postsEditRequestDto.getId(), user).orElseThrow(NotFoundPostsException::new);
         editPosts.setImage(postsEditRequestDto.getImage());
         editPosts.setContent(postsEditRequestDto.getContent());
         return new PostsEditResponseDto().toDo(editPosts);
