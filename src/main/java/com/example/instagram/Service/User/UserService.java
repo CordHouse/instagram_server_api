@@ -7,6 +7,7 @@ import com.example.instagram.Dto.User.*;
 import com.example.instagram.Entity.Token.RefreshToken;
 import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.Token.NotMatchRefreshTokenException;
+import com.example.instagram.Exception.User.FailureUserDeleteException;
 import com.example.instagram.Exception.User.NotFoundUserException;
 import com.example.instagram.Repository.Token.RefreshTokenRepository;
 import com.example.instagram.Repository.User.UserRepository;
@@ -14,8 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +39,12 @@ public class UserService {
 
     // 회원탈퇴
     @Transactional
-    public void deleteUser(User user) {
-        userRepository.deleteById(user.getId());
+    public void deleteUser(UserDeleteRequestDto userDeleteRequestDto, User user) {
+        if(userDeleteRequestDto.getUser_id() == user.getId()) {
+            userRepository.deleteById(user.getId());
+            return ;
+        }
+        throw new FailureUserDeleteException();
     }
 
     // 로그인
@@ -56,8 +64,7 @@ public class UserService {
     public TokenResponseDto tokenReissue(TokenReissueRequestDto tokenReissueRequestDto, User user) {
         RefreshToken refreshToken = refreshTokenRepository.findByTokenAndUser(tokenReissueRequestDto.getRefresh_token(), user)
                 .orElseThrow(NotMatchRefreshTokenException::new);
-        UsernamePasswordAuthenticationToken authToken = getAuthentication(user);
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authToken);
+        Authentication authentication = getAuthentication(user);
 
         TokenResponseDto tokenResponseDto = tokenProvider.createToken(authentication, user.getId());
         refreshToken.setToken(tokenProvider.getRefreshToken());
@@ -66,7 +73,8 @@ public class UserService {
 
     // Authentication 생성
     public UsernamePasswordAuthenticationToken getAuthentication(User user) {
-        return new UsernamePasswordAuthenticationToken(user.getNickname(), "");
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(user.getRole().toString());
+        return new UsernamePasswordAuthenticationToken(user.getNickname(), "", Collections.singleton(simpleGrantedAuthority));
     }
 
     // 프로필 조회
