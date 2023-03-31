@@ -6,6 +6,7 @@ import com.example.instagram.Dto.Token.TokenResponseDto;
 import com.example.instagram.Dto.User.*;
 import com.example.instagram.Entity.Token.RefreshToken;
 import com.example.instagram.Entity.User.User;
+import com.example.instagram.Entity.User.UserRoleType;
 import com.example.instagram.Exception.Token.NotMatchRefreshTokenException;
 import com.example.instagram.Exception.User.FailureUserDeleteException;
 import com.example.instagram.Exception.User.NotFoundUserException;
@@ -13,7 +14,6 @@ import com.example.instagram.Repository.Token.RefreshTokenRepository;
 import com.example.instagram.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,16 @@ import java.util.Collections;
 public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
 
     // 회원가입
     @Transactional
     public UserRegisterResponseDto signUp(UserRegisterRequestDto userRegisterRequestDto) {
-        User newUser = new User(userRegisterRequestDto.getNickname(), userRegisterRequestDto.getProfile_image());
+        User newUser = User.builder()
+                .nickname(userRegisterRequestDto.getNickname())
+                .profile_image_url(userRegisterRequestDto.getProfile_image())
+                .role(UserRoleType.ROLE_MEMBER)
+                .build();
         userRepository.save(newUser);
         return new UserRegisterResponseDto().toDo(newUser);
     }
