@@ -50,14 +50,14 @@ public class UserController {
         return userService.tokenReissue(tokenReissueRequestDto, getUser());
     }
 
-    // 프로필 조회 -> Jwt + security 적용 이후 확인
+    // 프로필 조회
     @PostMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserResponseDto getProfile() {
         return userService.getProfile(getUser());
     }
 
-    // 프로필 수정 -> Jwt + security 적용 이후 확인
+    // 프로필 수정
     @PutMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserEditResponseDto editProfile(@RequestBody @Valid UserEditRequestDto userEditRequestDto) {
