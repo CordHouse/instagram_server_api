@@ -3,6 +3,7 @@ package com.example.instagram.Dto.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,6 +13,6 @@ import javax.validation.constraints.NotBlank;
 public class UserRegisterRequestDto {
     @NotBlank(message = "사용할 닉네임을 입력해주세요.")
     private String nickname;
-    @NotBlank(message = "사용할 프로필을 입력해주세요.")
-    private String profile_image;
+
+    private MultipartFile profile_image;
 }
