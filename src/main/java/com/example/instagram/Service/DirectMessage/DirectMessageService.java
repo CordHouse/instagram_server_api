@@ -31,23 +31,20 @@ public class DirectMessageService {
     // DM 전송
     @Transactional
     public void sendMessage(SendMessageRequestDto sendMessageRequestDto, User user) {
-        // 1. 대상 유저가 있는지 db에서 찾아본다.
-        User targetUser = userRepository.findById(sendMessageRequestDto.getUser_id()).orElseThrow(NotFoundUserException::new);
-        // 2. 있다면, DM을 전송해야 하는데 이전에 대화하던 방이 있는지 찾아본다.
-        ChatRoom searchChatRoom = chatRoomRepository.findByTargetAndUserOrUserAndTarget(user.getId(), targetUser, targetUser, user.getId());
+        User receiverUser = userRepository.findById(sendMessageRequestDto.getUser_id()).orElseThrow(NotFoundUserException::new);
+        ChatRoom searchChatRoom = chatRoomRepository.findByTargetAndHostOrHostAndTarget(user, receiverUser, receiverUser, user);
         LocalDateTime nowDate = LocalDateTime.now();
-        // 3. 방이 있다면, 대화를 이어나간다.
+
         if(searchChatRoom != null) {
             searchChatRoom.setLast_message(sendMessageRequestDto.getContent());
             searchChatRoom.setLast_sent_at(nowDate);
-            DirectMessage newDirectMessage = new DirectMessage(searchChatRoom, targetUser, sendMessageRequestDto.getContent(), user.getId(), nowDate);
+            DirectMessage newDirectMessage = createDirectMessage(searchChatRoom, user, receiverUser, sendMessageRequestDto.getContent(), nowDate);
             chatRoomRepository.save(searchChatRoom);
             directMessageRepository.save(newDirectMessage);
             return ;
         }
-        // 3-1. 없다면 새로 방을 만들고 첫 DM을 보낸다.
-        ChatRoom newChatRoom = new ChatRoom(targetUser, user.getId(), sendMessageRequestDto.getContent(), nowDate);
-        DirectMessage newDirectMessage = new DirectMessage(newChatRoom, targetUser, sendMessageRequestDto.getContent(), user.getId(), nowDate);
+        ChatRoom newChatRoom = createChatRoom(user, receiverUser, sendMessageRequestDto.getContent(), nowDate);
+        DirectMessage newDirectMessage = createDirectMessage(newChatRoom, user, receiverUser, sendMessageRequestDto.getContent(), nowDate);
         chatRoomRepository.save(newChatRoom);
         directMessageRepository.save(newDirectMessage);
     }
@@ -55,7 +52,7 @@ public class DirectMessageService {
     // DM 목록 조회
     @Transactional
     public List<ChatRoomResponseDto> getDirectMessages(User user) {
-        List<ChatRoom> targetUserChatRoom = chatRoomRepository.findAllByUserOrTarget(user, user.getId());
+        List<ChatRoom> targetUserChatRoom = chatRoomRepository.findAllByHostOrTarget(user, user);
 
         if(targetUserChatRoom.isEmpty()) {
             throw new NotFoundChatRoomException();
@@ -80,5 +77,41 @@ public class DirectMessageService {
         directMessageInfo.stream().map(dto -> directMessageInfoResponseDtoList.add(new DirectMessageInfoResponseDto().toDo(dto)))
                 .collect(Collectors.toList());
         return directMessageInfoResponseDtoList;
+    }
+
+    /***
+     * 채팅방 생성
+     * @param host 송신자
+     * @param target 수신자
+     * @param message 메시지
+     * @param nowDate 보낸 시간
+     * @return 채팅방 객체
+     */
+    public ChatRoom createChatRoom(User host, User target, String message, LocalDateTime nowDate) {
+        return ChatRoom.builder()
+                .host(host)
+                .target(target)
+                .last_message(message)
+                .last_sent_at(nowDate)
+                .build();
+    }
+
+    /***
+     * 메신저 전송
+     * @param chatRoom 채팅방 객체
+     * @param sender 송신자
+     * @param receiver 수신자
+     * @param message 메시지
+     * @param nowDate 시간
+     * @return 메신저 객체
+     */
+    public DirectMessage createDirectMessage(ChatRoom chatRoom, User sender, User receiver, String message, LocalDateTime nowDate) {
+        return DirectMessage.builder()
+                .chatRoom(chatRoom)
+                .sender(sender)
+                .receiver(receiver)
+                .message(message)
+                .sent_at(nowDate)
+                .build();
     }
 }
