@@ -3,6 +3,7 @@ package com.example.instagram.Entity.Replies;
 import com.example.instagram.Entity.Comment.Comment;
 import com.example.instagram.Entity.User.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Replies {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,10 +33,4 @@ public class Replies {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-
-    public Replies(String content, Comment comment, User user) {
-        this.content = content;
-        this.comment = comment;
-        this.user = user;
-    }
 }
