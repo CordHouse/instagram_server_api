@@ -2,6 +2,7 @@ package com.example.instagram.Entity.Token;
 
 import com.example.instagram.Entity.User.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -26,8 +28,4 @@ public class RefreshToken {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public RefreshToken(String token, User user) {
-        this.token = token;
-        this.user = user;
-    }
 }
