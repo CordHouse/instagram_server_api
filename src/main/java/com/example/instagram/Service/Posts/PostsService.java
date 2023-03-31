@@ -24,7 +24,11 @@ public class PostsService {
     // 글 생성
     @Transactional
     public PostsCreateResponseDto createBoard(PostsCreateRequestDto postsCreateRequestDto, User user) {
-        Posts newPosts = new Posts(user, postsCreateRequestDto.getImage(), postsCreateRequestDto.getContent());
+        Posts newPosts = Posts.builder()
+                .user(user)
+                .image(postsCreateRequestDto.getImage())
+                .content(postsCreateRequestDto.getContent())
+                .build();
         postsRepository.save(newPosts);
 
         return new PostsCreateResponseDto().toDo(newPosts);
