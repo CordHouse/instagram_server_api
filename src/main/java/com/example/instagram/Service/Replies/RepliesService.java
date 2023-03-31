@@ -23,7 +23,11 @@ public class RepliesService {
     public RepliesCreateResponseDto createReplies(RepliesCreateRequestDto repliesCreateRequestDto, User user) {
         Comment choiceComment = commentRepository.findById(repliesCreateRequestDto.getComment_id())
                 .orElseThrow(NotFoundCommentException::new);
-        Replies newReplies = new Replies(repliesCreateRequestDto.getContent(), choiceComment, user);
+        Replies newReplies = Replies.builder()
+                .user(user)
+                .comment(choiceComment)
+                .content(repliesCreateRequestDto.getContent())
+                .build();
         repliesRepository.save(newReplies);
         return new RepliesCreateResponseDto().toDo(newReplies);
     }
