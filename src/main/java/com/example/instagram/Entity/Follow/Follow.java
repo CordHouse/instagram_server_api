@@ -2,6 +2,7 @@ package com.example.instagram.Entity.Follow;
 
 import com.example.instagram.Entity.User.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -13,21 +14,19 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
 
-    @Column(nullable = false)
-    private long host;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "receiver_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-
-    public Follow(long host, User user) {
-        this.host = host;
-        this.user = user;
-    }
+    private User receiver;
 }
