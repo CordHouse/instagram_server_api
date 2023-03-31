@@ -1,8 +1,10 @@
 package com.example.instagram.Entity.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -22,20 +25,14 @@ public class User {
     private String profile_image_url;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private long follow;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private long following;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private UserRoleType role;
-
-    public User(String nickname, String profile_image_url) {
-        this.nickname = nickname;
-        this.profile_image_url = profile_image_url;
-        this.follow = 0;
-        this.following = 0;
-        this.role = UserRoleType.ROLE_MEMBER;
-    }
 }
