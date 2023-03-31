@@ -1,9 +1,6 @@
 package com.example.instagram.Controller.Comment;
 
-import com.example.instagram.Dto.Comment.CommentCreateRequestDto;
-import com.example.instagram.Dto.Comment.CommentCreateResponseDto;
-import com.example.instagram.Dto.Comment.CommentEditRequestDto;
-import com.example.instagram.Dto.Comment.CommentEditResponseDto;
+import com.example.instagram.Dto.Comment.*;
 import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.User.NotFoundUserException;
 import com.example.instagram.Repository.User.UserRepository;
@@ -38,10 +35,10 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/comment/{id}")
+    @DeleteMapping("/comment")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteComment(@PathVariable long id) {
-        commentService.deleteComment(id, getUser());
+    public void deleteComment(@RequestBody @Valid CommentDeleteRequestDto commentDeleteRequestDto) {
+        commentService.deleteComment(commentDeleteRequestDto, getUser());
     }
 
     // 토큰 정보로 유저 객체 생성
