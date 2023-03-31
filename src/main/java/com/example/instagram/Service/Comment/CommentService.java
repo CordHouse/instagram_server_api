@@ -21,8 +21,12 @@ public class CommentService {
     // 댓글 생성
     @Transactional
     public CommentCreateResponseDto createComment(CommentCreateRequestDto commentCreateRequestDto, User user) {
-        Posts posts_id = getPost_id(commentCreateRequestDto.getPost_id());
-        Comment newComment = new Comment(posts_id, commentCreateRequestDto.getContent(), user);
+        Posts newPosts = getPost_id(commentCreateRequestDto.getPost_id());
+        Comment newComment = Comment.builder()
+                .user(user)
+                .posts(newPosts)
+                .content(commentCreateRequestDto.getContent())
+                .build();
         commentRepository.save(newComment);
         return new CommentCreateResponseDto().toDo(newComment);
     }
