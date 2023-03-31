@@ -1,9 +1,6 @@
 package com.example.instagram.Service.Comment;
 
-import com.example.instagram.Dto.Comment.CommentCreateRequestDto;
-import com.example.instagram.Dto.Comment.CommentCreateResponseDto;
-import com.example.instagram.Dto.Comment.CommentEditRequestDto;
-import com.example.instagram.Dto.Comment.CommentEditResponseDto;
+import com.example.instagram.Dto.Comment.*;
 import com.example.instagram.Entity.Comment.Comment;
 import com.example.instagram.Entity.Posts.Posts;
 import com.example.instagram.Entity.User.User;
@@ -40,8 +37,8 @@ public class CommentService {
 
     // 댓글 삭제
     @Transactional
-    public void deleteComment(long id, User user) {
-        commentRepository.deleteByIdAndUser(id, user);
+    public void deleteComment(CommentDeleteRequestDto commentDeleteRequestDto, User user) {
+        commentRepository.deleteByIdAndUser(commentDeleteRequestDto.getId(), user);
     }
 
     // 게시글 작성자 id(pk)로 검색
