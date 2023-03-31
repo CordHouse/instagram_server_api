@@ -16,24 +16,42 @@ public class FollowService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
+    private static final int COUNT = 1;
+
     // 팔로우 신청
     @Transactional
     public void follow(long id, User user) {
         User followResponseUser = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
-
-        Follow newFollow = followRepository.findByHostAndUser(user.getId(), followResponseUser).orElseThrow(AlreadyFollowException::new);
-        user.setFollow(user.getFollow()+1);
-        followResponseUser.setFollowing(followResponseUser.getFollowing()+1);
-        followRepository.save(newFollow);
+        followConfirm(user, followResponseUser);
+        user.setFollow(user.getFollow()+COUNT);
+        followResponseUser.setFollowing(followResponseUser.getFollowing()+COUNT);
     }
 
     // 팔로우 취소
     @Transactional
     public void unFollow(long id, User user) {
         User followResponseUser = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
-
-        user.setFollow(user.getFollow()-1);
-        followResponseUser.setFollowing(followResponseUser.getFollowing()-1);
+        user.setFollow(user.getFollow()-COUNT);
+        followResponseUser.setFollowing(followResponseUser.getFollowing()-COUNT);
         followRepository.deleteById(id);
+    }
+
+    /***
+     * 팔로우가 가능한지 확인한다. ( 이미 신청한 사용자라면 예외처리 )
+     * @param user 팔로우 신청자
+     * @param followResponseUser 팔로우 신청을 받는 사람
+     */
+    @Transactional
+    public void followConfirm(User user, User followResponseUser) {
+        Follow newFollow = followRepository.findBySenderAndReceiver(user, followResponseUser);
+        if(newFollow == null) {
+            newFollow = Follow.builder()
+                    .sender(user)
+                    .receiver(followResponseUser)
+                    .build();
+            followRepository.save(newFollow);
+            return;
+        }
+        throw new AlreadyFollowException();
     }
 }
