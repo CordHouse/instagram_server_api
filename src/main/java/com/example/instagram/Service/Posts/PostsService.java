@@ -26,7 +26,7 @@ public class PostsService {
     public PostsCreateResponseDto createBoard(PostsCreateRequestDto postsCreateRequestDto, User user) {
         Posts newPosts = Posts.builder()
                 .user(user)
-                .image(postsCreateRequestDto.getImage())
+                .image(postsCreateRequestDto.getImage().getOriginalFilename())
                 .content(postsCreateRequestDto.getContent())
                 .build();
         postsRepository.save(newPosts);
@@ -38,7 +38,7 @@ public class PostsService {
     @Transactional
     public PostsEditResponseDto editBoard(PostsEditRequestDto postsEditRequestDto, User user) {
         Posts editPosts = postsRepository.findByIdAndUser(postsEditRequestDto.getId(), user).orElseThrow(NotFoundPostsException::new);
-        editPosts.setImage(postsEditRequestDto.getImage());
+        editPosts.setImage(postsEditRequestDto.getImage().getOriginalFilename());
         editPosts.setContent(postsEditRequestDto.getContent());
         return new PostsEditResponseDto().toDo(editPosts);
     }

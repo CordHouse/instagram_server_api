@@ -33,7 +33,7 @@ public class UserService {
     public UserRegisterResponseDto signUp(UserRegisterRequestDto userRegisterRequestDto) {
         User newUser = User.builder()
                 .nickname(userRegisterRequestDto.getNickname())
-                .profile_image_url(userRegisterRequestDto.getProfile_image())
+                .profile_image_url(userRegisterRequestDto.getProfile_image().getOriginalFilename())
                 .role(UserRoleType.ROLE_MEMBER)
                 .build();
         userRepository.save(newUser);
@@ -93,7 +93,7 @@ public class UserService {
     @Transactional
     public UserEditResponseDto editProfile(UserEditRequestDto userEditRequestDto, User user) {
         user.setNickname(userEditRequestDto.getNickname());
-        user.setProfile_image_url(userEditRequestDto.getProfile_image_url());
+        user.setProfile_image_url(userEditRequestDto.getProfile_image_url().getOriginalFilename());
         return new UserEditResponseDto().toDo(user);
     }
 }
