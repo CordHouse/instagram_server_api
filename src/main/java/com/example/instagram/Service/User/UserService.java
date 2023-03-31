@@ -57,7 +57,10 @@ public class UserService {
         Authentication authentication = getAuthentication(user);
 
         TokenResponseDto tokenResponseDto = tokenProvider.createToken(authentication, user.getId());
-        RefreshToken refreshToken = new RefreshToken(tokenProvider.getRefreshToken(), user);
+        RefreshToken refreshToken = RefreshToken.builder()
+                .user(user)
+                .token(tokenProvider.getRefreshToken())
+                .build();
         refreshTokenRepository.save(refreshToken);
         return tokenResponseDto;
     }
