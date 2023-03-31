@@ -1,9 +1,6 @@
 package com.example.instagram.Controller.Replies;
 
-import com.example.instagram.Dto.Replies.RepliesCreateRequestDto;
-import com.example.instagram.Dto.Replies.RepliesCreateResponseDto;
-import com.example.instagram.Dto.Replies.RepliesEditRequestDto;
-import com.example.instagram.Dto.Replies.RepliesEditResponseDto;
+import com.example.instagram.Dto.Replies.*;
 import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.User.NotFoundUserException;
 import com.example.instagram.Repository.User.UserRepository;
@@ -38,10 +35,10 @@ public class RepliesController {
     }
 
     // 답글 삭제
-    @DeleteMapping("/replies/{id}")
+    @DeleteMapping("/replies")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteReplies(@PathVariable long id) {
-        repliesService.deleteReplies(id, getUser());
+    public void deleteReplies(@RequestBody @Valid RepliesDeleteRequestDto repliesDeleteRequestDto) {
+        repliesService.deleteReplies(repliesDeleteRequestDto, getUser());
     }
 
     // 토큰 정보로 유저 객체 생성
