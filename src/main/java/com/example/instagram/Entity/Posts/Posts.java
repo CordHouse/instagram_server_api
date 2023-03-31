@@ -3,6 +3,7 @@ package com.example.instagram.Entity.Posts;
 import com.example.instagram.Entity.Comment.Comment;
 import com.example.instagram.Entity.User.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Posts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -33,10 +35,4 @@ public class Posts {
 
     @OneToMany(mappedBy = "posts", fetch = FetchType.LAZY)
     private List<Comment> comments;
-
-    public Posts(User user, String image, String content) {
-        this.user = user;
-        this.image = image;
-        this.content = content;
-    }
 }
