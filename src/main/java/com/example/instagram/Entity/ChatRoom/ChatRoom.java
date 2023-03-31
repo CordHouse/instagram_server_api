@@ -2,6 +2,7 @@ package com.example.instagram.Entity.ChatRoom;
 
 import com.example.instagram.Entity.User.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -25,18 +27,13 @@ public class ChatRoom {
     @Column(nullable = false)
     private LocalDateTime last_sent_at;
 
-    @Column(nullable = false)
-    private long target;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User target;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "host_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-
-    public ChatRoom(User user, long target, String last_message, LocalDateTime last_sent_at) {
-        this.user = user;
-        this.target = target;
-        this.last_message = last_message;
-        this.last_sent_at = last_sent_at;
-    }
+    private User host;
 }
