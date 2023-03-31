@@ -19,8 +19,8 @@ public class ChatRoomResponseDto {
 
     public ChatRoomResponseDto toDo(ChatRoom chatRoom) {
         return new ChatRoomResponseDto(chatRoom.getId(),
-                chatRoom.getUser().getNickname(),
-                chatRoom.getUser().getProfile_image_url(),
+                chatRoom.getHost().getNickname(),
+                chatRoom.getHost().getProfile_image_url(),
                 chatRoom.getLast_message(),
                 chatRoom.getLast_sent_at());
     }
