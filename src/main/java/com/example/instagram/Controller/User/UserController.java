@@ -25,7 +25,7 @@ public class UserController {
     // 회원가입
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.OK)
-    public UserRegisterResponseDto signUp(@RequestBody @Valid UserRegisterRequestDto userRegisterRequestDto) {
+    public UserRegisterResponseDto signUp(@ModelAttribute @Valid UserRegisterRequestDto userRegisterRequestDto) {
         return userService.signUp(userRegisterRequestDto);
     }
 
@@ -60,7 +60,7 @@ public class UserController {
     // 프로필 수정
     @PutMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public UserEditResponseDto editProfile(@RequestBody @Valid UserEditRequestDto userEditRequestDto) {
+    public UserEditResponseDto editProfile(@ModelAttribute @Valid UserEditRequestDto userEditRequestDto) {
         return userService.editProfile(userEditRequestDto, getUser());
     }
 

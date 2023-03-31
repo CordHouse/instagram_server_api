@@ -27,14 +27,14 @@ public class PostsController {
     // 글 생성
     @PostMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
-    public PostsCreateResponseDto createBoard(@RequestBody @Valid PostsCreateRequestDto postsCreateRequestDto) {
+    public PostsCreateResponseDto createBoard(@ModelAttribute @Valid PostsCreateRequestDto postsCreateRequestDto) {
         return postsService.createBoard(postsCreateRequestDto, getUser());
     }
 
     // 글 수정
     @PutMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
-    public PostsEditResponseDto editBoard(@RequestBody @Valid PostsEditRequestDto postsEditRequestDto) {
+    public PostsEditResponseDto editBoard(@ModelAttribute @Valid PostsEditRequestDto postsEditRequestDto) {
         return postsService.editBoard(postsEditRequestDto, getUser());
     }
 
