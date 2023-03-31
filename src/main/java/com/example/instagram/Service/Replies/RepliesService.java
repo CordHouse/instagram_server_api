@@ -1,9 +1,6 @@
 package com.example.instagram.Service.Replies;
 
-import com.example.instagram.Dto.Replies.RepliesCreateRequestDto;
-import com.example.instagram.Dto.Replies.RepliesCreateResponseDto;
-import com.example.instagram.Dto.Replies.RepliesEditRequestDto;
-import com.example.instagram.Dto.Replies.RepliesEditResponseDto;
+import com.example.instagram.Dto.Replies.*;
 import com.example.instagram.Entity.Comment.Comment;
 import com.example.instagram.Entity.Replies.Replies;
 import com.example.instagram.Entity.User.User;
@@ -42,7 +39,7 @@ public class RepliesService {
 
     // 답글 삭제
     @Transactional
-    public void deleteReplies(long id, User user) {
-        repliesRepository.deleteByIdAndUser(id, user);
+    public void deleteReplies(RepliesDeleteRequestDto repliesDeleteRequestDto, User user) {
+        repliesRepository.deleteByIdAndUser(repliesDeleteRequestDto.getId(), user);
     }
 }
