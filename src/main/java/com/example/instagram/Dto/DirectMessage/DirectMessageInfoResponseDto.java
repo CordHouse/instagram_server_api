@@ -20,8 +20,8 @@ public class DirectMessageInfoResponseDto {
     public DirectMessageInfoResponseDto toDo(DirectMessage directMessage) {
         return new DirectMessageInfoResponseDto(
                 directMessage.getId(),
-                directMessage.getUser().getNickname(),
-                directMessage.getUser().getProfile_image_url(),
+                directMessage.getSender().getNickname(),
+                directMessage.getSender().getProfile_image_url(),
                 directMessage.getMessage(),
                 directMessage.getSent_at());
     }
