@@ -1,15 +1,16 @@
 package com.example.instagram.Controller.Posts;
 
+import com.example.instagram.Dto.Feed.FeedRequestDto;
 import com.example.instagram.Dto.Feed.FeedResponseDto;
-import com.example.instagram.Dto.Posts.PostsCreateRequestDto;
-import com.example.instagram.Dto.Posts.PostsCreateResponseDto;
-import com.example.instagram.Dto.Posts.PostsEditRequestDto;
-import com.example.instagram.Dto.Posts.PostsEditResponseDto;
+import com.example.instagram.Dto.Posts.*;
 import com.example.instagram.Entity.User.User;
 import com.example.instagram.Exception.User.NotFoundUserException;
 import com.example.instagram.Repository.User.UserRepository;
 import com.example.instagram.Service.Posts.PostsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 public class PostsController {
     private final PostsService postsService;
     private final UserRepository userRepository;
+    private static final int PAGE_SIZE = 2;
 
     // 글 생성
     @PostMapping("/posts")
@@ -39,17 +41,18 @@ public class PostsController {
     }
 
     // 글 삭제
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteBoard(@PathVariable long id) {
-        postsService.deleteBoard(id, getUser());
+    public void deleteBoard(@RequestBody @Valid PostDeleteRequestDto postDeleteRequestDto) {
+        postsService.deleteBoard(postDeleteRequestDto, getUser());
     }
 
     // 피드 조회
     @GetMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
-    public FeedResponseDto getFeed() {
-        return postsService.getFeed(getUser());
+    public FeedResponseDto getFeed(@RequestBody @Valid FeedRequestDto feedRequestDto,
+            @PageableDefault(size = PAGE_SIZE, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postsService.getFeed(pageable, feedRequestDto);
     }
 
     // 토큰 정보로 유저 객체 생성
