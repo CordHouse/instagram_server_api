@@ -1,5 +1,6 @@
 package com.example.instagram.Service.DirectMessage;
 
+import com.example.instagram.Dto.ChatRoom.ChatRoomRequestDto;
 import com.example.instagram.Dto.ChatRoom.ChatRoomResponseDto;
 import com.example.instagram.Dto.DirectMessage.DirectMessageInfoResponseDto;
 import com.example.instagram.Dto.DirectMessage.SendMessageRequestDto;
@@ -13,6 +14,8 @@ import com.example.instagram.Repository.ChatRoom.ChatRoomRepository;
 import com.example.instagram.Repository.DirectMessage.DirectMessageRepository;
 import com.example.instagram.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,8 +54,8 @@ public class DirectMessageService {
 
     // DM 목록 조회
     @Transactional
-    public List<ChatRoomResponseDto> getDirectMessages(User user) {
-        List<ChatRoom> targetUserChatRoom = chatRoomRepository.findAllByHostOrTarget(user, user);
+    public List<ChatRoomResponseDto> getDirectMessages(Pageable pageable, User user, ChatRoomRequestDto chatRoomRequestDto) {
+        Page<ChatRoom> targetUserChatRoom = chatRoomRepository.findByQChatRoomQHostOrQTarget(pageable, user, user, chatRoomRequestDto.getCursor());
 
         if(targetUserChatRoom.isEmpty()) {
             throw new NotFoundChatRoomException();
