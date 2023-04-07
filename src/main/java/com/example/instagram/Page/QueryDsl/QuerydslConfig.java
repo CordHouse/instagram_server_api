@@ -1,4 +1,4 @@
-package com.example.instagram.Config.QueryDsl;
+package com.example.instagram.Page.QueryDsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
