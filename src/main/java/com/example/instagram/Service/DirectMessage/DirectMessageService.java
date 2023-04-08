@@ -2,8 +2,7 @@ package com.example.instagram.Service.DirectMessage;
 
 import com.example.instagram.Dto.ChatRoom.ChatRoomRequestDto;
 import com.example.instagram.Dto.ChatRoom.ChatRoomResponseDto;
-import com.example.instagram.Dto.DirectMessage.DirectMessageInfoResponseDto;
-import com.example.instagram.Dto.DirectMessage.SendMessageRequestDto;
+import com.example.instagram.Dto.DirectMessage.*;
 import com.example.instagram.Entity.ChatRoom.ChatRoom;
 import com.example.instagram.Entity.DirectMessage.DirectMessage;
 import com.example.instagram.Entity.User.User;
@@ -54,7 +53,7 @@ public class DirectMessageService {
 
     // DM 목록 조회
     @Transactional
-    public List<ChatRoomResponseDto> getDirectMessages(Pageable pageable, User user, ChatRoomRequestDto chatRoomRequestDto) {
+    public ChatRoomInfoResponseDto getDirectMessages(Pageable pageable, User user, ChatRoomRequestDto chatRoomRequestDto) {
         Page<ChatRoom> targetUserChatRoom = chatRoomRepository.findByQChatRoomQHostOrQTarget(pageable, user, user, chatRoomRequestDto.getCursor());
 
         if(targetUserChatRoom.isEmpty()) {
@@ -64,13 +63,14 @@ public class DirectMessageService {
         List<ChatRoomResponseDto> chatRoomResponseDtoList = new LinkedList<>();
         targetUserChatRoom.stream().map(dto -> chatRoomResponseDtoList.add(new ChatRoomResponseDto().toDo(dto)))
                 .collect(Collectors.toList());
-        return chatRoomResponseDtoList;
+        return new ChatRoomInfoResponseDto().toDo(chatRoomResponseDtoList);
     }
 
     // DM 상세 내역 조회
     @Transactional
-    public List<DirectMessageInfoResponseDto> getDirectMessageInfo(User user) {
-        List<DirectMessage> directMessageInfo = directMessageRepository.findAllBySenderOrReceiver(user, user);
+    public DirectMessageResponseDto getDirectMessageInfo(Pageable pageable, DirectMessageRequestDto directMessageRequestDto, User user) {
+        Page<DirectMessage> directMessageInfo = directMessageRepository.findQChatRoomAndQSenderOrQReceiver(
+                pageable, directMessageRequestDto.getChat_room_id(), user, directMessageRequestDto.getCursor());
 
         if(directMessageInfo.isEmpty()) {
             throw new NotFoundDirectMessageException();
@@ -79,7 +79,8 @@ public class DirectMessageService {
         List<DirectMessageInfoResponseDto> directMessageInfoResponseDtoList = new LinkedList<>();
         directMessageInfo.stream().map(dto -> directMessageInfoResponseDtoList.add(new DirectMessageInfoResponseDto().toDo(dto)))
                 .collect(Collectors.toList());
-        return directMessageInfoResponseDtoList;
+
+        return new DirectMessageResponseDto().toDo(directMessageInfoResponseDtoList);
     }
 
     /***
