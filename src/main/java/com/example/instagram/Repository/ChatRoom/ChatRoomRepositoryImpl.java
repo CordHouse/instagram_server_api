@@ -39,7 +39,6 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom{
         }
         // post.id.gt -> where posts0_.id > ? 으로 출력 그 다음 자료들이 나와야 하는 경우 ( 게시글에 적합 )
         // post.id.lt -> where posts0_.id < ? 으로 출력 그 이전 자료들이 나와야 하는 경우 ( 채팅방에 적합 )
-        System.out.println(chatRoom.id.gt(cursorId));
         return chatRoom.id.gt(cursorId);
     }
 }
