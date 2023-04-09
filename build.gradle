@@ -77,3 +77,8 @@ configurations {
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
+
+// CI / CD
+jar {
+    enabled = false
+}
