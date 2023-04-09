@@ -39,11 +39,12 @@
 ```text
 - Jwt 
 - Security
-- QueryDsl
 - CI / CD
  - Github Actions
  - Elastic BeanStalk
-- Pagenation
+- Pagenation (cursor)
+  - QueryDsl
+  - Pageable
 ```
 ---
 # 5. Config
