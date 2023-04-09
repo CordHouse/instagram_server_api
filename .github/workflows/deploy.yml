@@ -40,3 +40,5 @@ jobs: # 이벤트가 발생했을 때 독립된 환경에서 실행되어야 하
       - name: Show Current Time
         run: echo "CurrentTime=$" 
         shell: bash # (9).확보한 시간 보여주기
+        
+        # test 수정
