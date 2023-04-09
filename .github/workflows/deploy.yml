@@ -3,7 +3,7 @@ name: action_name # 코드를 push하면 레포지토리의 Actions를 클릭하
 on: # workflow 실행될 조건
   push:
     branches:
-      - main # (1). 해당되는 브랜치 이름
+      - Master # (1). 해당되는 브랜치 이름
 # workflow_dispatch: # (2). 수동 실행 (push 이벤트 외에도 수동으로 실행 가능)
 
 jobs: # 이벤트가 발생했을 때 독립된 환경에서 실행되어야 하는 일련의 일
