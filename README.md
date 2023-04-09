@@ -41,6 +41,8 @@
 - Security
 - QueryDsl
 - CI / CD
+ - Github Actions
+ - Elastic BeanStalk
 - Pagenation
 ```
 ---
