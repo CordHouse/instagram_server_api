@@ -9,7 +9,11 @@
   API 가이드라인을 따라 instagram 서버를 구현한다.
   
   | **시스템 구조도 아키텍쳐** |
-  사진첨부
+  | **REST APIs** |
+  ![REST](https://user-images.githubusercontent.com/74723818/230903512-52c8f8ea-540b-4067-9daa-2048a8d6319d.png)
+  | **CI/CD** |
+  ![CI](https://user-images.githubusercontent.com/74723818/230903532-006297cc-7154-4115-a27b-7e6070df6c7f.png)
+
 
   | **ERD** |
   ![InstaERD](https://user-images.githubusercontent.com/74723818/230729128-6da89542-5256-4356-9e91-98e2b021f0d4.PNG)
