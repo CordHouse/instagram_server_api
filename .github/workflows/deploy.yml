@@ -57,7 +57,7 @@ jobs: # 이벤트가 발생했을 때 독립된 환경에서 실행되어야 하
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           application_name: insta
-          environment_name: Insta-env
+          environment_name: Insta-env-1
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2 # 서울리전
           deployment_package: deploy/deploy.zip
