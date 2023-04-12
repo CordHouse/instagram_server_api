@@ -25,8 +25,8 @@
   | **ERD** |
   ![InstaERD](https://user-images.githubusercontent.com/74723818/230729128-6da89542-5256-4356-9e91-98e2b021f0d4.PNG)
 
-  | **DB Schema** |
-  사진첨부
+  | **DB Schema** |  
+  ![image](https://user-images.githubusercontent.com/74723818/231405300-ac08485b-172c-4129-9080-359b0f84e664.png)
   
 - API 스펙
   - 글 <생성, 수정, 삭제>
