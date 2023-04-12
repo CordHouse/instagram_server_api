@@ -69,8 +69,9 @@ public class DirectMessageService {
     // DM 상세 내역 조회
     @Transactional
     public DirectMessageResponseDto getDirectMessageInfo(Pageable pageable, DirectMessageRequestDto directMessageRequestDto, User user) {
+        ChatRoom chatRoom = chatRoomRepository.findById(directMessageRequestDto.getChat_room_id()).orElseThrow(NotFoundChatRoomException::new);
         Page<DirectMessage> directMessageInfo = directMessageRepository.findQChatRoomAndQSenderOrQReceiver(
-                pageable, directMessageRequestDto.getChat_room_id(), user, directMessageRequestDto.getCursor());
+                pageable, chatRoom, user, directMessageRequestDto.getCursor());
 
         if(directMessageInfo.isEmpty()) {
             throw new NotFoundDirectMessageException();
