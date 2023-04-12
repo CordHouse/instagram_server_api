@@ -60,8 +60,9 @@
 3. Security whiteList = 회원가입, 로그인, 프로필 조회
 ```
 ---
-# 6. Memoir(회고록)
+# 6. Memoir(회고록) & 가이드라인
 - [회고록](https://substantial-authority-c78.notion.site/d32d43bd36a94489b02b98f9d448b71b)
+- [가이드라인](https://thoughtful-arch-8c2.notion.site/Spring-c83f01ab221a4166a2713120728aa552)
 
 ---
 # 7. Convention
