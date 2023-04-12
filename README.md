@@ -13,7 +13,7 @@
   | **REST APIs** |
   ![REST](https://user-images.githubusercontent.com/74723818/230903512-52c8f8ea-540b-4067-9daa-2048a8d6319d.png)
   
-  | **CI/CD** |
+  | **CI/CD** |  
   ![CI](https://user-images.githubusercontent.com/74723818/230903532-006297cc-7154-4115-a27b-7e6070df6c7f.png)
 
 
