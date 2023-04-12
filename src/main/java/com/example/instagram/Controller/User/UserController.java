@@ -53,8 +53,9 @@ public class UserController {
     // 프로필 조회
     @PostMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDto getProfile() {
-        return userService.getProfile(getUser());
+    public UserResponseDto getProfile(@RequestBody @Valid UserProfileRequest userProfileRequest) {
+        User user = userRepository.findById(userProfileRequest.getId()).orElseThrow(NotFoundUserException::new);
+        return userService.getProfile(user);
     }
 
     // 프로필 수정
