@@ -10,7 +10,7 @@
   
   | **시스템 구조도 아키텍쳐** |
   
-  | **REST APIs** |
+  | **REST APIs** |  
   ![REST](https://user-images.githubusercontent.com/74723818/230903512-52c8f8ea-540b-4067-9daa-2048a8d6319d.png)
   
   | **CI/CD** |  
