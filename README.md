@@ -1,4 +1,8 @@
 <!--Header-->
+![image](https://user-images.githubusercontent.com/74723818/231402480-8fb57812-4419-468c-aa75-a4295f172a3c.png)  
+| **앱 적용 예시 이미지 ** |
+![image](https://user-images.githubusercontent.com/74723818/231403855-d4186812-1078-4ec8-9175-687ca0a43ef6.png)  
+---
 # 1. instagram_server_api
 - ProjectName : **instagram server**
 - DevelopPeriod : *2023.03.24 ~ 2023.04.13*
