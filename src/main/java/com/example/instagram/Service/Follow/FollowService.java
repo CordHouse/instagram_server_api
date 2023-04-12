@@ -33,7 +33,7 @@ public class FollowService {
         User followResponseUser = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
         user.setFollow(user.getFollow()-COUNT);
         followResponseUser.setFollowing(followResponseUser.getFollowing()-COUNT);
-        followRepository.deleteById(id);
+        followRepository.deleteByReceiver(followResponseUser);
     }
 
     /***
