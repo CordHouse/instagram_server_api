@@ -39,7 +39,7 @@
 # 3. Team Building
 - **BackEnd**
  - [이지우](https://github.com/CordHouse)
- - [최현준]()
+ - [최현준](https://github.com/devholic22)
 ---
 # 4. Skill
 ```text
@@ -61,7 +61,7 @@
 ```
 ---
 # 6. Memoir(회고록)
-- 노션 링크 첨부
+- [노션 링크 첨부](https://substantial-authority-c78.notion.site/d32d43bd36a94489b02b98f9d448b71b)
 
 ---
 # 7. Convention
