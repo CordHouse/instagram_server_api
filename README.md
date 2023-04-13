@@ -45,6 +45,7 @@
 - **BackEnd**
  - [이지우](https://github.com/CordHouse)
  - [최현준](https://github.com/devholic22)
+ - [정지환](https://github.com/JEONG-JIHWAN)
 ---
 # 4. Skill
 ```text
